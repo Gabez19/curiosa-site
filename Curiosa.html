@@ -1,0 +1,1193 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Curiosa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400..700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: uma única coluna de leitura. O tema sorteado ocupa o palco e a navegação fica discreta em volta. */
+:root{
+  --bg:#EFF2EE;
+  --surface:#F8FAF7;
+  --ink:#15201B;
+  --muted:#5B685F;
+  --line:#D5DBD3;
+  --line-strong:#B3BEB5;
+  --accent:#0E6F5F;
+  --on-accent:#FFFFFF;
+  --accent-soft:#DCEBE5;
+  --danger:#A6361F;
+  --f-display:'Bricolage Grotesque','Hanken Grotesk',system-ui,sans-serif;
+  --f-body:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-num:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1512; --surface:#141D19; --ink:#E7EEE9; --muted:#95A39A; --line:#25322B; --line-strong:#3B4B42;
+    --accent:#58D0B4; --on-accent:#06231C; --accent-soft:#17302A; --danger:#F08A73; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1512; --surface:#141D19; --ink:#E7EEE9; --muted:#95A39A; --line:#25322B; --line-strong:#3B4B42;
+  --accent:#58D0B4; --on-accent:#06231C; --accent-soft:#17302A; --danger:#F08A73; color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font:400 1rem/1.55 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+#app{max-width:1040px;margin:0 auto;padding-block:16px 72px}
+a{color:var(--accent)}
+::selection{background:var(--accent);color:var(--on-accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+
+/* Cabeçalho */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 24px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.brand{font:700 1.6rem/1 var(--f-display);letter-spacing:-.03em;color:var(--ink);text-decoration:none;padding-block:10px}
+.brand i{display:inline-block;width:.3em;height:.3em;border-radius:50%;background:var(--accent);margin-left:.1em}
+.nav{display:flex;gap:2px;overflow-x:auto;max-width:100%;min-width:0;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:10px 12px;color:var(--muted);text-decoration:none;font-weight:500;font-size:.95rem;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-7px}
+.nav a:hover{color:var(--ink)}
+.nav a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.brand{order:1}
+.nav{order:2}
+.snd{order:3;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;flex:none}
+.snd:hover{background:var(--accent-soft);color:var(--ink)}
+.snd[aria-pressed="true"]{color:var(--accent)}
+@media (max-width:720px){.snd{order:2;margin-left:auto}.nav{order:3;flex-basis:100%}}
+
+/* Botões e controles */
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{
+  font:600 .95rem/1.2 var(--f-body);padding:11px 18px;min-height:44px;border-radius:6px;
+  border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .15s,border-color .15s;
+}
+.btn:hover{background:var(--accent-soft)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent);filter:brightness(1.1)}
+.btn.big{padding:15px 26px;font-size:1.05rem;min-height:52px}
+.btn.sm{padding:6px 12px;min-height:34px;font-size:.85rem}
+.btn.danger{color:var(--danger);border-color:var(--danger)}
+.btn:disabled,.seg button:disabled{opacity:.45;cursor:not-allowed}
+.btn:disabled:hover{background:transparent}
+.btn svg{flex:none}
+.linkbtn{
+  background:none;border:0;border-bottom:1px dashed var(--line-strong);padding:6px 0;color:var(--muted);
+  font:500 .95rem var(--f-body);cursor:pointer;display:inline-flex;gap:6px;align-items:center;
+}
+.linkbtn:hover{color:var(--ink)}
+.linkbtn svg{transition:transform .2s}
+.linkbtn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden}
+.seg button{
+  font:600 .9rem var(--f-body);padding:9px 14px;min-height:40px;background:transparent;color:var(--muted);
+  border:0;border-right:1px solid var(--line-strong);cursor:pointer;
+}
+.seg button:last-child{border-right:0}
+.seg button:hover:not(:disabled){color:var(--ink)}
+.seg button[aria-pressed="true"],.seg button[aria-pressed="true"]:hover:not(:disabled){background:var(--ink);color:var(--bg)}
+input,textarea,select{
+  font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);
+  border-radius:6px;padding:10px 12px;width:100%;min-width:0;
+}
+textarea{resize:vertical;min-height:84px;line-height:1.5}
+select{width:auto;max-width:100%}
+input[type="checkbox"]{width:18px;height:18px;padding:0;accent-color:var(--accent);flex:none}
+label,.lbl{font-weight:600;font-size:.92rem}
+.field{display:grid;gap:6px;min-width:0}
+.form{display:grid;gap:18px;max-width:720px}
+
+/* Palco: sorteio e tema */
+.stage{display:flex;flex-direction:column;align-items:flex-start;gap:26px;padding-top:clamp(28px,8vh,84px)}
+.tagline{margin:0;font:600 clamp(1.8rem,5.4vw,3.2rem)/1.08 var(--f-display);letter-spacing:-.03em;text-wrap:balance}
+.tagline span{display:block}
+.tagline span:not(:first-child){color:var(--muted)}
+.eyebrow{font:600 .78rem/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.topic{
+  margin:0;max-width:100%;font:700 clamp(2.2rem,8.6vw,6.5rem)/.98 var(--f-display);
+  letter-spacing:-.035em;text-wrap:balance;overflow-wrap:anywhere;hyphens:auto;
+}
+.topic.long{font-size:clamp(1.9rem,6vw,4.2rem);line-height:1.04}
+.topic.sm{font-size:clamp(1.6rem,4.6vw,2.7rem);line-height:1.06;letter-spacing:-.03em}
+.topic.enter{animation:rise .4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.cats{display:grid;gap:0;justify-items:start;max-width:100%}
+.catpanel{margin-top:12px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;width:min(760px,100%)}
+.catgrid{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:0 18px}
+.catgrid li{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.catgrid label{display:flex;align-items:center;gap:9px;padding:7px 0;min-width:0;cursor:pointer;font-weight:500}
+.catgrid label small{color:var(--muted);font-variant-numeric:tabular-nums}
+.only{background:none;border:0;color:var(--accent);font:600 .82rem var(--f-body);cursor:pointer;padding:6px 4px}
+.warn{color:var(--danger);margin:12px 0 0;font-size:.92rem}
+
+/* Etapas do desafio */
+.work{display:grid;gap:20px;justify-items:start;padding-top:clamp(16px,4vh,40px)}
+.work>*{max-width:100%}
+.stepper{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 0;font-size:.88rem;font-weight:600;color:var(--muted)}
+.stepper li{display:flex;align-items:center}
+.stepper li:not(:last-child)::after{content:"";width:28px;height:1px;background:var(--line-strong);margin-inline:10px}
+.stepper .is-done{color:var(--ink)}
+.stepper .is-cur{color:var(--accent)}
+.stepper .is-cur::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:8px}
+.timer{display:grid;gap:14px;justify-items:start;width:min(640px,100%)}
+.clock{font:600 clamp(4rem,17vw,9rem)/1 var(--f-num);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.bar{height:3px;width:100%;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transform-origin:left;transform:scaleX(0);transition:transform .25s linear}
+.lead{max-width:56ch;margin:0}
+.apoio{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;width:100%;max-width:880px}
+.q{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px;padding:14px 0;border-bottom:1px solid var(--line);width:100%;max-width:720px}
+.q span{flex:1 1 260px;font-weight:500}
+
+/* Páginas */
+.page{padding-top:clamp(20px,5vh,48px)}
+.pagehead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:22px}
+.pagehead h1,.page h1.title{margin:0;font:700 clamp(1.8rem,5vw,2.8rem)/1.05 var(--f-display);letter-spacing:-.03em}
+.page h2{font:700 1.3rem/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 10px}
+.page h3{font:600 .8rem/1.3 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.inline{display:flex;align-items:center;gap:10px}
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.rows>li{border-bottom:1px solid var(--line)}
+.rowhead{display:flex;flex-direction:column;gap:4px;width:100%;text-align:left;background:none;border:0;padding:18px 0;cursor:pointer;color:inherit;font:inherit}
+.r-title{font:600 1.35rem/1.2 var(--f-display);letter-spacing:-.02em;overflow-wrap:anywhere}
+.r-meta{color:var(--muted);font-size:.9rem}
+.rowhead:hover .r-title{color:var(--accent)}
+.item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
+.item .r-title{display:block}
+.detail{display:grid;gap:18px;padding:2px 0 24px;max-width:760px}
+.qa{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:6px 0;border-bottom:1px dotted var(--line-strong)}
+.qa dt,.qa dd{margin:0}
+.qa dd{font-weight:600}
+dl{margin:0}
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
+.note{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.note h2{margin:0;font-size:1.2rem}
+.note .links{display:grid;gap:2px;font-size:.9rem;overflow-wrap:anywhere}
+.empty{color:var(--muted);max-width:52ch;padding:18px 0}
+.block{margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+.steps-list{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.steps-list li{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
+.chk{display:flex;align-items:center;gap:10px;font-weight:500;padding:8px 0;min-width:0;flex:1}
+.chk .done{text-decoration:line-through;color:var(--muted)}
+.chk span{overflow-wrap:anywhere}
+.x{background:none;border:0;color:var(--muted);font-size:1.3rem;cursor:pointer;padding:4px 10px;line-height:1}
+.x:hover{color:var(--danger)}
+.addrow{display:flex;gap:8px;flex-wrap:wrap}
+.addrow input{flex:1 1 220px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<div id="app" lang="pt-BR"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   BANCO DE TEMAS
+   Para incluir novos temas, acrescente textos ao FINAL da lista da
+   categoria (os identificadores dependem da posição). Para criar uma
+   categoria nova, acrescente um objeto { id, nome, temas } ao final.
+   ============================================================ */
+const BANCO=[
+ {id:'ciencia',nome:'Ciência',temas:['Método Científico','Revisão por Pares','Efeito Placebo','Ensaios Clínicos','Vacinas','Penicilina','Marie Curie','Pasteurização','Teoria do Caos','Tempo Geológico','Como são calculadas as probabilidades?','Revolução Científica','Teoria dos Números','Números Primos','Paradoxo de Monty Hall','Estatística Bayesiana','Pseudociência','Falseabilidade','Isaac Newton','Sequência de Fibonacci','Geometria Fractal','Instituto Butantan']},
+ {id:'tecnologia',nome:'Tecnologia',temas:['Terabyte','Inteligência Artificial','Criptografia','Blockchain','Impressão 3D','Computação em Nuvem','Computação Quântica','Internet das Coisas','Código QR','Como funciona o GPS?','Como a internet chega até nossas casas?','Sistema Operacional','Realidade Virtual','Aprendizado de Máquina','Banco de Dados','Wi-Fi','Tecnologia 5G','Fibra Óptica','Software Livre','Robótica','Semicondutores','Algoritmos']},
+ {id:'fisica',nome:'Física',temas:['Teoria da Relatividade','Mecânica Quântica','Termodinâmica','Eletromagnetismo','Supercondutores','Efeito Doppler','Energia Nuclear','Laser','Por que os aviões conseguem voar?','Por que o céu é azul?','Leis de Newton','Gravidade','Entropia','Efeito Fotoelétrico','Radioatividade','Fusão Nuclear','Princípio da Incerteza','Óptica','Energia Geotérmica','Pêndulo de Foucault','Aceleradores de Partículas','Como funciona um ímã?']},
+ {id:'quimica',nome:'Química',temas:['Tabela Periódica','Ligações Químicas','Ácidos e Bases','Polímeros','Isótopos','Catalisadores','Destilação','Eletrólise','Corrosão','Como funciona uma bateria?','Química Orgânica','Alquimia','Oxidação e Redução','Gases Nobres','Hidrogênio Verde','Cristalização','Petróleo','Cromatografia','Lei de Lavoisier','Fabricação do Vidro','Grafeno','Por que o gelo flutua?']},
+ {id:'biologia',nome:'Biologia',temas:['Fotossíntese','Sistema Imunológico','CRISPR','Mitocôndrias','Seleção Natural','Microbioma Intestinal','Vírus','Células-Tronco','Sistema Circulatório','Por que dormimos?','DNA','Engenharia Genética','Genética Mendeliana','Evolução Humana','Sistema Nervoso','Resistência a Antibióticos','Fungos','Hormônios','Metabolismo','Câncer','Ciclo Celular','Como funcionam os anticorpos?']},
+ {id:'astronomia',nome:'Astronomia',temas:['Buracos Negros','Via Láctea','Exoplanetas','Supernovas','Telescópio James Webb','Big Bang','Eclipses','Matéria Escura','Estação Espacial Internacional','Por que a Lua tem fases?','Sistema Solar','Marte','Anéis de Saturno','Estrelas de Nêutrons','Cometas','Programa Apollo','Telescópio Hubble','Constelações','Vida Extraterrestre','Ondas Gravitacionais','Expansão do Universo','Por que Plutão deixou de ser planeta?']},
+ {id:'historia-mundial',nome:'História mundial',temas:['Império Romano','Revolução Industrial','Revolução Francesa','Peste Negra','Guerra Fria','Antigo Egito','Renascimento','Rota da Seda','Queda do Muro de Berlim','Império Mongol','Primeira Guerra Mundial','Segunda Guerra Mundial','Grécia Antiga','Cruzadas','Império Otomano','Revolução Russa','Grandes Navegações','Civilização Maia','Império Inca','Mesopotâmia','Iluminismo','Independência dos Estados Unidos']},
+ {id:'historia-brasil',nome:'História do Brasil',temas:['Inconfidência Mineira','Proclamação da República','Era Vargas','Abolição da Escravatura','Guerra de Canudos','Bandeirantes','Vinda da Família Real','Plano Real','Diretas Já','Quilombo dos Palmares','Descobrimento do Brasil','Ditadura Militar','Capitanias Hereditárias','Ciclo do Ouro','Guerra do Paraguai','Independência do Brasil','Revolta da Vacina','Construção de Brasília','Cangaço','Ciclo da Borracha','Revolta da Chibata','Revolução de 1932']},
+ {id:'geografia',nome:'Geografia',temas:['Placas Tectônicas','Floresta Amazônica','Pantanal','Aquífero Guarani','El Niño','Fusos Horários','Latitude e Longitude','Projeção de Mercator','Vulcões','Efeito Estufa','Deserto do Saara','Himalaia','Antártida','Monções','Tsunamis','Terremotos','Rio Nilo','Cordilheira dos Andes','Canal do Panamá','Zonas Climáticas','Cartografia','Por que existem estações do ano?']},
+ {id:'psicologia',nome:'Psicologia',temas:['Memória Humana','Viés de Confirmação','Efeito Dunning-Kruger','Condicionamento Clássico','Dissonância Cognitiva','Pirâmide de Maslow','Teoria do Apego','Efeito Halo','Neuroplasticidade','Por que sentimos déjà-vu?','Psicologia Cognitiva','Inconsciente','Behaviorismo','Inteligência Emocional','Efeito Espectador','Experimento de Milgram','Heurísticas Cognitivas','Atenção Seletiva','Ilusões de Ótica','Inteligências Múltiplas','Psicologia Positiva','Por que procrastinamos?']},
+ {id:'filosofia',nome:'Filosofia',temas:['Estoicismo','Existencialismo','Alegoria da Caverna','Utilitarismo','Ceticismo','Imperativo Categórico','Navalha de Occam','Método Socrático','Dilema do Bonde','Contrato Social','Platão','Aristóteles','Friedrich Nietzsche','Epicurismo','Fenomenologia','Empirismo','Racionalismo','Taoísmo','Confucionismo','Niilismo','Simone de Beauvoir','Livre-Arbítrio']},
+ {id:'economia',nome:'Economia e negócios',temas:['Inflação','Taxa Selic','Produto Interno Bruto','Oferta e Demanda','Juros Compostos','Bolsa de Valores','Cadeia de Suprimentos','Monopólio','Economia Comportamental','Como funciona o Pix?','Macroeconomia','Câmbio','Recessão Econômica','Startups','Empreendedorismo','Livre Comércio','Adam Smith','Crise de 1929','Economia Circular','Teoria dos Jogos','Fundos de Investimento','Por que o dólar sobe e desce?']},
+ {id:'sociedade',nome:'Sociedade',temas:['Urbanização','Globalização','Envelhecimento Populacional','Gentrificação','Mobilidade Urbana','Migrações Humanas','Desinformação','Trabalho Remoto','Obsolescência Programada','Desigualdade Social','Redes Sociais','Consumismo','Feminismo','Educação Pública','Sistema Único de Saúde','Religiões do Mundo','Povos Indígenas','Sociologia','Privacidade de Dados','Terceiro Setor','Bolhas de Filtro','Cidades Inteligentes']},
+ {id:'politica',nome:'Política e cidadania',temas:['Separação dos Poderes','Constituição Federal','Democracia','Federalismo','Direitos Humanos','Orçamento Público','Parlamentarismo','Plebiscito e Referendo','Organização das Nações Unidas','Lei de Acesso à Informação','Sistema Eleitoral','Urna Eletrônica','Supremo Tribunal Federal','Congresso Nacional','Partidos Políticos','Liberalismo','Socialismo','União Europeia','Diplomacia','Habeas Corpus','Mercosul','Direitos do Consumidor']},
+ {id:'cultura',nome:'Cultura e conhecimentos gerais',temas:['Mitologia Grega','Mitologia Nórdica','Folclore Brasileiro','Calendário Gregoriano','Prêmio Nobel','Patrimônio da Humanidade','História do Xadrez','Origem do Alfabeto','Carnaval','Línguas Indígenas do Brasil','Mitologia Egípcia','Festa Junina','Sete Maravilhas do Mundo','Origami','Culinária Japonesa','Heráldica','Esperanto','Origem da Língua Portuguesa','Museu do Louvre','Samurais','Vikings','Bandeiras Nacionais']},
+ {id:'cinema',nome:'Cinema e entretenimento',temas:['Cinema Mudo','Nouvelle Vague','Cinema Novo','Efeitos Visuais','Stop Motion','Alfred Hitchcock','Era de Ouro de Hollywood','Expressionismo Alemão','Festival de Cannes','Como são feitos os efeitos sonoros do cinema?','Animação','Neorrealismo Italiano','Cinema Documentário','Stanley Kubrick','Akira Kurosawa','Cerimônia do Oscar','Trilha Sonora','Roteiro de Cinema','Montagem Cinematográfica','Telenovela Brasileira','Streaming','Filme Noir']},
+ {id:'musica',nome:'Música',temas:['Escala Musical','Bossa Nova','Jazz','Blues','Samba','Tropicália','Música Barroca','Sintetizador','Ópera','Por que alguns acordes soam tristes?','Rock and Roll','Hip Hop','Música Eletrônica','Ludwig van Beethoven','Wolfgang Amadeus Mozart','Johann Sebastian Bach','Orquestra Sinfônica','Piano','Forró','Choro','Heitor Villa-Lobos','Discos de Vinil']},
+ {id:'literatura',nome:'Literatura',temas:['Realismo Mágico','Machado de Assis','Modernismo Brasileiro','Literatura de Cordel','Dom Quixote','Odisseia','Ficção Científica','Clarice Lispector','William Shakespeare','Romance Policial','Romantismo','Ilíada','Divina Comédia','Franz Kafka','Jorge Amado','Carlos Drummond de Andrade','Guimarães Rosa','Literatura Russa','Contos de Fadas','Histórias em Quadrinhos','Haicai','Literatura Distópica']},
+ {id:'arte',nome:'Arte e arquitetura',temas:['Arquitetura Gótica','Impressionismo','Cubismo','Surrealismo','Barroco Mineiro','Oscar Niemeyer','Arte Rupestre','Grafite','Art Nouveau','Frida Kahlo','Arquitetura Brutalista','Leonardo da Vinci','Vincent van Gogh','Pablo Picasso','Pop Art','Arte Abstrata','Tarsila do Amaral','Aleijadinho','Pintura a Óleo','Fotografia','Arquitetura Moderna','Arte Islâmica']},
+ {id:'design',nome:'Design',temas:['Bauhaus','Tipografia','Teoria das Cores','Ergonomia','Design Industrial','Identidade Visual','Proporção Áurea','Acessibilidade Digital','Prototipagem','Design Sustentável','Design Gráfico','Design de Interfaces','Minimalismo','Design Escandinavo','Design Thinking','Design de Jogos','Estilo Tipográfico Internacional','Design de Moda','Design de Embalagens','Sinalização','Design de Mobiliário','Logotipos']},
+ {id:'esportes',nome:'Esportes',temas:['Maratona','Jogos Olímpicos Modernos','Copa do Mundo de Futebol','Ginástica Artística','Judô','Capoeira','Surfe','Doping no Esporte','Vôlei','Como funciona o impedimento no futebol?','Basquete','Tênis','Natação','Jogos Paralímpicos','Pelé','Rugby','Skate','Boxe','Ciclismo','Esgrima','Alpinismo','Árbitro de Vídeo (VAR)']},
+ {id:'automobilismo',nome:'Automobilismo',temas:['Fórmula 1','Ayrton Senna','24 Horas de Le Mans','Fórmula E','Rali Dakar','Pit Stop','Bandeiras do Automobilismo','Efeito Solo','Stock Car','Como funciona um motor a combustão?','Pneus de Corrida','Grande Prêmio de Mônaco','Autódromo de Interlagos','MotoGP','500 Milhas de Indianápolis','Michael Schumacher','Juan Manuel Fangio','Emerson Fittipaldi','Safety Car','Kart','Rali Mundial','Como funciona um motor turbo?']},
+ {id:'natureza',nome:'Natureza e animais',temas:['Abelhas','Corais','Polinização','Camuflagem Animal','Ecolocalização','Hibernação','Polvos','Simbiose','Cerrado','Extinção em Massa','Baleias','Tubarões','Elefantes','Dinossauros','Aves Migratórias','Formigas','Mata Atlântica','Manguezais','Onça-Pintada','Pinguins','Morcegos','Metamorfose dos Insetos']},
+ {id:'cotidiano',nome:'Conhecimentos do cotidiano',temas:['Código de Barras','Como funciona um micro-ondas?','Como funciona uma geladeira?','Fusível e Disjuntor','Fermentação','Conservação de Alimentos','Vitaminas','Cartão de Crédito','Rótulo Nutricional','Sabão','Café','Chocolate','Primeiros Socorros','Seguros','Imposto de Renda','Reciclagem','Protetor Solar','Alimentos Ultraprocessados','Tratamento de Água','Relógio Mecânico','Termômetro','Como funciona um ar-condicionado?']}
+];
+/*FIM-BANCO*/
+
+/* Temas originais (BANCO) e temas do usuário (S.custom) ficam separados.
+   TOPICOS é só a lista combinada usada no sorteio; os temas do usuário têm u:true. */
+let TOPICOS=[];
+const ORIGINAIS=[];
+BANCO.forEach(c=>c.temas.forEach((t,i)=>ORIGINAIS.push({id:c.id+'-'+(i+1),t:t,c:c.nome,cid:c.id})));
+function rebuildTopics(){
+  const nome=id=>{const c=BANCO.find(x=>x.id===id); return c?c.nome:'';};
+  TOPICOS=ORIGINAIS.concat(S.custom.map(t=>({id:t.id,t:t.t,c:nome(t.cid),cid:t.cid,u:true})));
+}
+const normTxt=t=>String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+
+const NAV=[['inicio','Início'],['historico','Histórico'],['salvos','Salvos'],['caderno','Caderno'],['24h','24 horas'],['ajustes','Ajustes']];
+const VIEWS=NAV.map(n=>n[0]);
+const APOIO=[['oque','O que é?'],['como','Como funciona?'],['porque','Por que é importante?'],['exemplos','Exemplos'],['interessante','O que achei interessante?']];
+const QF=[['entendi','Consegui entender o assunto?'],['proprias','Consegui explicar com minhas próprias palavras?'],['exemplos','Consegui apresentar exemplos?'],['funciona','Entendi como o assunto funciona?']];
+const QS=[['entendi','Entendi o assunto'],['proprias','Expliquei com minhas palavras'],['exemplos','Apresentei exemplos'],['funciona','Entendi como funciona']];
+const ANS={sim:'Sim',parcial:'Parcialmente',nao:'Não'};
+const TIPOS={anotacao:'Anotação',duvida:'Dúvida',exemplo:'Exemplo',link:'Link'};
+
+/* ============================================================
+   Armazenamento local (localStorage, com cópia em memória)
+   ============================================================ */
+const mem={};
+const store={
+  get(k,d){
+    try{const v=localStorage.getItem('curiosa.'+k); if(v!==null) return JSON.parse(v);}catch(e){}
+    return (k in mem)?mem[k]:d;
+  },
+  set(k,v){
+    mem[k]=v;
+    try{localStorage.setItem('curiosa.'+k,JSON.stringify(v));}catch(e){}
+  }
+};
+const arr=x=>Array.isArray(x)?x:[];
+const S={
+  prefs:Object.assign({pesq:10,expl:1,excl:[],som:true,tema:'auto'},store.get('prefs',{})),
+  recent:arr(store.get('recent',[])),
+  saved:arr(store.get('saved',[])),
+  history:arr(store.get('history',[])),
+  notes:arr(store.get('notes',[])),
+  plans:arr(store.get('plans',[])),
+  custom:arr(store.get('custom',[])).filter(t=>t&&typeof t.id==='string'&&typeof t.t==='string'&&BANCO.some(c=>c.id===t.cid)),
+  ch:store.get('ch',null)
+};
+S.prefs.excl=arr(S.prefs.excl).filter(id=>BANCO.some(c=>c.id===id));
+S.prefs.som=S.prefs.som!==false;
+if(['auto','claro','escuro'].indexOf(S.prefs.tema)<0) S.prefs.tema='auto';
+rebuildTopics();
+if(!S.ch||!S.ch.topic||!S.ch.stage||!S.ch.pesq||!S.ch.expl) S.ch=null;
+const save=k=>store.set(k,S[k]);
+
+const ui={confirm:null,catOpen:false,histFiltro:'',histOpen:null,noteDraft:null,noteErr:'',planId:null,newPlan:null,planErr:'',
+  done:null,anim:false,shuffle:false,top:false,fk:null,focusId:null,apoioOpen:null,
+  ctDraft:null,ctErr:'',imp:null,impMsg:null,expText:'',expMsg:null};
+
+/* ============================================================
+   Aparência: Automático segue o sistema (ou o tema do visualizador);
+   Claro e Escuro forçam o atributo data-theme na raiz.
+   ============================================================ */
+const rootEl=document.documentElement;
+let hostTheme=rootEl.getAttribute('data-theme'),mineTheme=hostTheme;
+function applyTheme(){
+  const m=S.prefs.tema;
+  const want=m==='claro'?'light':m==='escuro'?'dark':hostTheme;
+  mineTheme=want;
+  if(want) rootEl.setAttribute('data-theme',want); else rootEl.removeAttribute('data-theme');
+}
+try{
+  new MutationObserver(()=>{
+    const cur=rootEl.getAttribute('data-theme');
+    if(cur===mineTheme||(!cur&&!mineTheme)) return;
+    if(S.prefs.tema==='auto'){hostTheme=cur; mineTheme=cur;} else applyTheme();
+  }).observe(rootEl,{attributes:true,attributeFilter:['data-theme']});
+}catch(e){}
+applyTheme();
+
+/* ============================================================
+   Utilidades
+   ============================================================ */
+const app=document.getElementById('app');
+const $=(s,r)=>(r||document).querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const fmtDate=ts=>new Date(ts).toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});
+const fmtTime=ts=>new Date(ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+const fmtDur=s=>{s=Math.round(s||0); if(s<=0) return '—'; const m=Math.floor(s/60),r=s%60; if(!m) return r+' s'; return r?m+' min '+r+' s':m+' min';};
+const fmtClock=ms=>{const s=Math.ceil(ms/1000); return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+const currentView=()=>{const h=location.hash.replace('#',''); return VIEWS.indexOf(h)>=0?h:'inicio';};
+const fkOf=el=>[el.dataset.act,el.dataset.id||el.dataset.k||'',el.dataset.v||''].join('|');
+const ta=(id,bind,val,rows)=>'<textarea id="'+id+'" data-bind="'+bind+'" rows="'+(rows||3)+'">\n'+esc(val)+'</textarea>';
+
+const ICON={
+  bm:on=>'<svg width="16" height="16" viewBox="0 0 24 24" fill="'+(on?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+  chev:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>'
+};
+
+function cbtn(act,id,label,confirmLabel,cls){
+  const on=ui.confirm===act+':'+(id||'');
+  return '<button class="btn '+(cls||'')+(on?' danger':'')+'" data-act="'+act+'"'+(id?' data-id="'+esc(id)+'"':'')+' data-confirm="1">'+esc(on?confirmLabel:label)+'</button>';
+}
+function startBtn(act,id,label){
+  if(S.ch&&S.ch.stage!=='sorteado') return cbtn(act,id,label,'Substituir o desafio atual?');
+  return '<button class="btn" data-act="'+act+'" data-id="'+esc(id)+'">'+esc(label)+'</button>';
+}
+
+/* ============================================================
+   Sorteio
+   ============================================================ */
+function pool(){const ex=new Set(S.prefs.excl); return TOPICOS.filter(t=>!ex.has(t.cid));}
+function draw(){
+  const p=pool(); if(!p.length) return null;
+  const n=Math.min(60,Math.floor(p.length/2));
+  const rec=new Set(S.recent.slice(-n));
+  let c=p.filter(t=>!rec.has(t.id));
+  if(!c.length) c=p;
+  const cur=S.ch&&S.ch.topic&&S.ch.topic.id;
+  const sem=c.filter(t=>t.id!==cur);
+  if(sem.length) c=sem;
+  return c[Math.floor(Math.random()*c.length)];
+}
+function pushRecent(id){S.recent.push(id); if(S.recent.length>200) S.recent=S.recent.slice(-200); save('recent');}
+function newChallenge(t){
+  return {topic:t,stage:'sorteado',startedAt:Date.now(),
+    pesq:{dur:S.prefs.pesq*60,status:'idle',acc:0,t0:0,spent:0},
+    expl:{dur:S.prefs.expl*60,status:'idle',acc:0,t0:0,spent:0},
+    apoio:{},refl:{},aprendi:'',quero:''};
+}
+function startWith(t){
+  ui.done=null; ui.apoioOpen=null;
+  S.ch=newChallenge({id:t.id,t:t.t,c:t.c,cid:t.cid});
+  pushRecent(t.id); save('ch');
+  ui.anim=true; ui.top=true;
+  if(currentView()!=='inicio') location.hash='#inicio';
+}
+function doSortear(){
+  const t=draw(); if(!t) return;
+  startWith(t); ui.shuffle=true;
+}
+const isSaved=id=>S.saved.some(s=>s.id===id);
+function toggleSaved(t){
+  const i=S.saved.findIndex(s=>s.id===t.id);
+  if(i>=0) S.saved.splice(i,1); else S.saved.unshift({id:t.id,t:t.t,c:t.c,cid:t.cid,ts:Date.now()});
+  save('saved');
+}
+
+/* ============================================================
+   Cronômetros (baseados em horário, não em contagem de ticks)
+   ============================================================ */
+const curTimer=()=>!S.ch?null:S.ch.stage==='pesquisa'?S.ch.pesq:S.ch.stage==='explicacao'?S.ch.expl:null;
+const elapsed=t=>t.acc+(t.status==='running'?Date.now()-t.t0:0);
+const remaining=t=>Math.max(0,t.dur*1000-elapsed(t));
+
+function finishTimer(){
+  const t=curTimer(); if(!t) return;
+  Snd.cancelAll();
+  if(t.status!=='done'){
+    const e=Math.min(t.dur*1000,elapsed(t));
+    t.acc=e; t.spent=Math.round(e/1000); t.status='done'; t.t0=0;
+  }
+  if(S.ch.stage==='pesquisa'){S.ch.stage='explicacao'; S.ch.expl.dur=S.prefs.expl*60;}
+  else S.ch.stage='reflexao';
+  save('ch'); ui.top=true; ui.anim=true;
+}
+
+/* ============================================================
+   Efeitos sonoros (Web Audio API, sem arquivos de áudio)
+   - O contexto de áudio só é criado e liberado após um gesto do usuário.
+   - A contagem final é agendada no relógio do próprio áudio quando o
+     cronômetro inicia ou continua. Assim os sons saem na hora certa mesmo
+     com a aba em segundo plano, e são cancelados ao pausar, reiniciar,
+     finalizar ou silenciar.
+   ============================================================ */
+const Snd={
+  ctx:null,master:null,fx:new Set(),cd:new Set(),endScheduled:false,
+  on(){return S.prefs.som!==false;},
+  ensure(){
+    if(!this.on()) return null;
+    if(!this.ctx){
+      try{
+        const C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
+        this.ctx=new C(); this.master=this.ctx.createGain(); this.master.gain.value=.8; this.master.connect(this.ctx.destination);
+        this.ctx.onstatechange=()=>{syncCountdown();};
+      }catch(e){this.ctx=null; return null;}
+    }
+    return this.ctx;
+  },
+  unlock(){
+    const c=this.ensure(); if(!c) return;
+    if(c.state!=='running'){try{c.resume().then(()=>syncCountdown()).catch(()=>{});}catch(e){}}
+  },
+  ready(){return !!(this.on()&&this.ctx&&this.ctx.state==='running');},
+  group(kind){
+    const g=this.ctx.createGain(); g.gain.value=1; g.connect(this.master);
+    const grp={g:g,nodes:[],end:0};
+    (kind==='cd'?this.cd:this.fx).add(grp);
+    return grp;
+  },
+  tone(grp,o){
+    const c=this.ctx,t=c.currentTime+(o.at||0),d=o.dur;
+    const osc=c.createOscillator(),v=c.createGain();
+    osc.type=o.type||'sine';
+    osc.frequency.setValueAtTime(o.f,t);
+    if(o.f2) osc.frequency.exponentialRampToValueAtTime(o.f2,t+d);
+    v.gain.setValueAtTime(.0001,t);
+    v.gain.exponentialRampToValueAtTime(o.vol,t+(o.att||.006));
+    v.gain.exponentialRampToValueAtTime(.0001,t+d);
+    osc.connect(v); v.connect(grp.g); osc.start(t); osc.stop(t+d+.03);
+    grp.nodes.push(osc); grp.end=Math.max(grp.end,(o.at||0)+d+.05);
+  },
+  retire(grp,set){
+    setTimeout(()=>{set.delete(grp); try{grp.g.disconnect();}catch(e){}},Math.max(300,(grp.end+.4)*1000));
+  },
+  kill(grp,set,fade){
+    const c=this.ctx; set.delete(grp); if(!c) return;
+    const t=c.currentTime,f=fade||.02;
+    try{grp.g.gain.cancelScheduledValues(t); grp.g.gain.setValueAtTime(grp.g.gain.value,t); grp.g.gain.linearRampToValueAtTime(0,t+f);}catch(e){}
+    grp.nodes.forEach(n=>{try{n.stop(t+f+.01);}catch(e){}});
+    setTimeout(()=>{try{grp.g.disconnect();}catch(e){}},400);
+  },
+  cutFx(){Array.from(this.fx).forEach(g=>this.kill(g,this.fx,.02));},
+  cancelCd(){Array.from(this.cd).forEach(g=>this.kill(g,this.cd,.03)); this.endScheduled=false;},
+  cancelAll(){this.cutFx(); this.cancelCd(); cdSig='';},
+  /* efeito imediato; late=true tenta de novo quando o áudio terminar de liberar */
+  fxPlay(build,late){
+    if(!this.on()) return;
+    const c=this.ensure(); if(!c) return;
+    const go=()=>{const grp=this.group('fx'); build(grp,0); this.retire(grp,this.fx);};
+    if(c.state==='running') go();
+    else if(late){try{c.resume().then(()=>{if(c.state==='running'&&this.on()) go();}).catch(()=>{});}catch(e){}}
+  },
+  /* construtores de som */
+  bTick(g,at,k){this.tone(g,{f:k%2?1180:1420,f2:k%2?620:760,dur:.035,vol:.09,type:'triangle',att:.002,at:at});},
+  bReveal(g,at){
+    this.tone(g,{f:784,dur:.5,vol:.11,at:at});
+    this.tone(g,{f:1175,dur:.6,vol:.09,at:at+.09});
+  },
+  bStart(g,at){
+    this.tone(g,{f:587,dur:.1,vol:.1,at:at});
+    this.tone(g,{f:880,dur:.18,vol:.1,at:at+.09});
+  },
+  bPop(g,at,f){this.tone(g,{f:f,f2:f*.42,dur:.07,vol:.14,type:'triangle',att:.002,at:at});},
+  bNum(g,at,n){
+    const F={5:440,4:494,3:554,2:659,1:784};
+    this.tone(g,{f:F[n],dur:n===1?.2:.13,vol:.12,at:at});
+  },
+  bEnd(g,at){
+    [523,659,784,1047].forEach((f,i)=>this.tone(g,{f:f,dur:i===3?.9:.4,vol:.11,at:at+i*.13}));
+  },
+  tick(k){this.fxPlay((g,at)=>this.bTick(g,at,k),false);},
+  reveal(){this.cutFx(); this.fxPlay((g,at)=>this.bReveal(g,at),true);},
+  start(){this.cutFx(); this.fxPlay((g,at)=>this.bStart(g,at),true);},
+  confirm(){this.cutFx(); this.fxPlay((g,at)=>this.bPop(g,at,900),true);},
+  endNow(){this.fxPlay((g,at)=>this.bEnd(g,at),false);},
+  /* agenda a contagem final para o tempo restante informado (ms) */
+  scheduleCd(rem){
+    if(!this.ready()) return;
+    const grp=this.group('cd');
+    const ev=[[15000,'p',700],[10000,'p',900],[5000,'n',5],[4000,'n',4],[3000,'n',3],[2000,'n',2],[1000,'n',1],[0,'e']];
+    ev.forEach(e=>{
+      if(rem<=e[0]) return;
+      const at=(rem-e[0])/1000;
+      if(e[1]==='p') this.bPop(grp,at,e[2]);
+      else if(e[1]==='n') this.bNum(grp,at,e[2]);
+      else {this.bEnd(grp,at); this.endScheduled=true;}
+    });
+    this.retire(grp,this.cd);
+  }
+};
+
+let cdSig='';
+function syncCountdown(force){
+  const t=curTimer();
+  if(t&&t.status==='done') return;   /* fim natural: deixa o som de encerramento terminar */
+  const run=!!(t&&t.status==='running');
+  const sig=run?[S.ch.stage,t.t0,t.acc,t.dur].join('|'):'-';
+  const full=sig+'|'+(Snd.ready()?1:0);
+  if(full===cdSig&&!force) return;
+  cdSig=full;
+  Snd.cancelCd();
+  if(!run) return;
+  Snd.scheduleCd(remaining(t));
+}
+['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>Snd.unlock(),{passive:true,capture:true}));
+
+let wl=null;
+async function wake(on){
+  try{
+    if(on){
+      if(!wl&&navigator.wakeLock){
+        wl=await navigator.wakeLock.request('screen');
+        wl.addEventListener('release',()=>{wl=null;});
+      }
+    }else if(wl){const w=wl; wl=null; await w.release();}
+  }catch(e){wl=null;}
+}
+function syncWake(){const t=curTimer(); wake(!!(t&&t.status==='running'&&document.visibilityState==='visible'));}
+
+function tick(){
+  const t=curTimer();
+  if(!t){if(document.title!=='Curiosa') document.title='Curiosa'; return;}
+  if(t.status==='running'&&remaining(t)<=0){
+    t.acc=t.dur*1000; t.spent=t.dur; t.status='done'; t.t0=0;
+    save('ch'); if(Snd.ready()&&!Snd.endScheduled) Snd.endNow(); render(); return;
+  }
+  const rem=remaining(t);
+  const clk=$('#clock'); if(clk) clk.textContent=fmtClock(rem);
+  const bar=$('#barfill'); if(bar) bar.style.transform='scaleX('+Math.min(1,t.dur?elapsed(t)/(t.dur*1000):0)+')';
+  const title=t.status==='running'?fmtClock(rem)+' · Curiosa':t.status==='done'?'Tempo encerrado · Curiosa':'Curiosa';
+  if(document.title!==title) document.title=title;
+}
+
+/* ============================================================
+   Telas
+   ============================================================ */
+function sndBtn(){
+  const on=S.prefs.som!==false;
+  const wave='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/>';
+  const ico=on?wave+'<path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>':wave+'<path d="m16 9 6 6M22 9l-6 6"/></svg>';
+  return '<button class="snd" data-act="som" aria-pressed="'+on+'" aria-label="Efeitos sonoros" title="'+(on?'Som ligado. Toque para silenciar.':'Som desligado. Toque para ativar.')+'">'+ico+'</button>';
+}
+function header(view){
+  return '<header class="top"><a class="brand" href="#inicio" aria-label="Curiosa, início">Curiosa<i></i></a>'+sndBtn()+
+    '<nav class="nav" aria-label="Seções">'+NAV.map(n=>'<a href="#'+n[0]+'"'+(n[0]===view?' aria-current="page"':'')+'>'+n[1]+'</a>').join('')+'</nav></header>';
+}
+
+/* --- seletor de categorias --- */
+function catSummary(){
+  const inc=BANCO.filter(c=>S.prefs.excl.indexOf(c.id)<0);
+  if(inc.length===BANCO.length) return 'Todas as categorias';
+  if(!inc.length) return 'Nenhuma categoria';
+  if(inc.length===1) return inc[0].nome;
+  return inc.length+' de '+BANCO.length+' categorias';
+}
+function catPanel(){
+  const zero=S.prefs.excl.length===BANCO.length;
+  return '<div id="catpanel" class="catpanel"><div class="row">'+
+    '<button class="btn sm" data-act="catAll">Todas</button><button class="btn sm" data-act="catNone">Nenhuma</button></div>'+
+    '<ul class="catgrid">'+BANCO.map(c=>{
+      const on=S.prefs.excl.indexOf(c.id)<0;
+      return '<li><label><input type="checkbox" data-act="catCheck" data-id="'+c.id+'"'+(on?' checked':'')+'><span>'+esc(c.nome)+'</span> <small>'+(c.temas.length+S.custom.filter(x=>x.cid===c.id).length)+'</small></label>'+
+        '<button class="only" data-act="catOnly" data-id="'+c.id+'" aria-label="Sortear apenas '+esc(c.nome)+'">só</button></li>';
+    }).join('')+'</ul>'+
+    (zero?'<p class="warn">Escolha ao menos uma categoria para sortear.</p>':'')+'</div>';
+}
+function catBar(){
+  return '<div class="cats"><button class="linkbtn" data-act="catToggle" aria-expanded="'+ui.catOpen+'" aria-controls="catpanel">'+esc(catSummary())+' '+ICON.chev+'</button>'+
+    (ui.catOpen?catPanel():'')+'</div>';
+}
+
+/* --- início --- */
+function stepper(cur){
+  const s=[['pesquisa','Pesquisa'],['explicacao','Explicação'],['reflexao','Reflexão']];
+  const idx=s.findIndex(x=>x[0]===cur);
+  return '<ol class="stepper" aria-label="Etapas do desafio">'+s.map((x,i)=>'<li class="'+(i<idx?'is-done':i===idx?'is-cur':'')+'"'+(i===idx?' aria-current="step"':'')+'>'+x[1]+'</li>').join('')+'</ol>';
+}
+function topicHead(t,cls){
+  return '<div class="eyebrow">'+esc(t.c)+'</div><h1 id="topicText" class="topic '+(cls||'')+'">'+esc(t.t)+'</h1>';
+}
+function vInicio(){
+  if(ui.done) return vDone();
+  const c=S.ch;
+  if(!c) return vIdle();
+  if(c.stage==='sorteado') return vSorteado();
+  if(c.stage==='pesquisa') return vPesquisa();
+  if(c.stage==='explicacao') return vExplicacao();
+  if(c.stage==='reflexao') return vReflexao();
+  return vIdle();
+}
+function vIdle(){
+  const mp=S.prefs.pesq,me=S.prefs.expl;
+  return '<section class="stage"><h1 class="tagline"><span>Um tema ao acaso.</span><span>'+mp+' minutos para pesquisar.</span><span>'+me+' '+(me===1?'minuto':'minutos')+' para explicar.</span></h1>'+
+    '<div class="row"><button class="btn primary big" data-act="sortear"'+(pool().length?'':' disabled')+'>Sortear tema</button></div>'+
+    catBar()+'<p class="small muted">'+TOPICOS.length+' temas em '+BANCO.length+' categorias.</p></section>';
+}
+function vSorteado(){
+  const t=S.ch.topic,sv=isSaved(t.id);
+  return '<section class="stage">'+
+    '<div class="eyebrow">'+esc(t.c)+'</div>'+
+    '<h1 id="topicText" class="topic'+(t.t.length>26?' long':'')+(ui.anim&&!ui.shuffle?' enter':'')+'">'+esc(t.t)+'</h1>'+
+    '<p class="sr-only" role="status">Tema sorteado: '+esc(t.t)+'. Categoria: '+esc(t.c)+'.</p>'+
+    '<div class="row"><button class="btn primary big" data-act="iniciarPesq">Começar a pesquisar</button>'+
+    '<button class="btn" data-act="sortear"'+(pool().length?'':' disabled')+'>Sortear outro</button>'+
+    '<button class="btn" data-act="salvar" aria-pressed="'+sv+'">'+ICON.bm(sv)+(sv?'Tema salvo':'Salvar tema')+'</button></div>'+
+    catBar()+'</section>';
+}
+function timerBlock(t,opts){
+  const st=t.status,started=t.acc>0||st==='running'||st==='done';
+  const idle=st==='idle'&&t.acc===0;
+  const pct=Math.min(1,t.dur?elapsed(t)/(t.dur*1000):0);
+  const msg=st==='running'?'Em andamento. Pode trocar de aba ou de janela: o tempo continua contando.':st==='paused'?'Pausado.':st==='done'?'Tempo encerrado.':'Pronto quando você estiver.';
+  const next=S.ch.stage==='pesquisa'?'Ir para a explicação':'Ir para a reflexão';
+  let main='';
+  if(st==='idle'||st==='paused') main='<button class="btn primary big" data-act="tstart">'+(st==='paused'?'Continuar':'Iniciar')+'</button>';
+  else if(st==='running') main='<button class="btn primary big" data-act="tpause">Pausar</button>';
+  return '<div class="timer"><div class="seg" role="group" aria-label="Duração">'+
+    opts.map(m=>'<button data-act="dur" data-v="'+m+'" aria-pressed="'+(t.dur===m*60)+'"'+(started?' disabled':'')+'>'+m+' min</button>').join('')+'</div>'+
+    '<div id="clock" class="clock" role="timer">'+fmtClock(remaining(t))+'</div>'+
+    '<div class="bar" aria-hidden="true"><i id="barfill" style="transform:scaleX('+pct+')"></i></div>'+
+    '<p class="small muted" style="margin:0">'+msg+'</p>'+
+    '<div class="row">'+main+
+    '<button class="btn" data-act="trestart"'+(idle?' disabled':'')+'>Reiniciar</button>'+
+    '<button class="btn'+(st==='done'?' primary big':'')+'" data-act="tfinish"'+(idle?' disabled':'')+'>'+(st==='done'?next:'Finalizar')+'</button></div></div>';
+}
+function abandon(){return '<div>'+cbtn('abandonar','','Abandonar este desafio','Confirmar: abandonar','sm')+'</div>';}
+function vPesquisa(){
+  const c=S.ch,t=c.topic;
+  const has=Object.keys(c.apoio||{}).some(k=>(c.apoio[k]||'').trim());
+  const open=ui.apoioOpen==null?has:ui.apoioOpen;
+  return '<section class="work">'+stepper('pesquisa')+topicHead(t,'sm')+
+    '<p class="lead muted">Pesquise onde preferir: sites, livros, vídeos ou artigos. Quando o tempo acabar, você vai explicar o assunto sem olhar as anotações.</p>'+
+    timerBlock(c.pesq,[5,10,15,20])+
+    '<div style="width:100%"><button class="linkbtn" data-act="apoioToggle" aria-expanded="'+open+'" aria-controls="apoio">Anotações de apoio (opcional) '+ICON.chev+'</button>'+
+    (open?'<div id="apoio" class="apoio" style="margin-top:14px">'+APOIO.map(a=>
+      '<div class="field"><label for="ap-'+a[0]+'">'+a[1]+'</label>'+ta('ap-'+a[0],'ch.apoio.'+a[0],(c.apoio||{})[a[0]],3)+'</div>').join('')+'</div>':'')+'</div>'+
+    abandon()+'</section>';
+}
+function vExplicacao(){
+  const c=S.ch,t=c.topic;
+  return '<section class="work">'+stepper('explicacao')+topicHead(t,'sm')+
+    '<p class="lead">Explique o assunto em voz alta, com as suas palavras, sem consultar as anotações. Não precisa gravar nada.</p>'+
+    timerBlock(c.expl,[1,2,3])+abandon()+'</section>';
+}
+function vReflexao(){
+  const c=S.ch,t=c.topic,R=c.refl||{};
+  return '<section class="work">'+stepper('reflexao')+topicHead(t,'sm')+
+    '<p class="lead muted">Leva menos de um minuto. Responda o que fizer sentido.</p>'+
+    '<div style="width:100%">'+QF.map(q=>'<div class="q"><span>'+q[1]+'</span><div class="seg" role="group" aria-label="'+esc(q[1])+'">'+
+      ['sim','parcial','nao'].map(v=>'<button data-act="refl" data-k="'+q[0]+'" data-v="'+v+'" aria-pressed="'+(R[q[0]]===v)+'">'+ANS[v]+'</button>').join('')+'</div></div>').join('')+'</div>'+
+    '<div class="form" style="width:100%">'+
+    '<div class="field"><label for="f-conf">Quais pontos ainda ficaram confusos?</label>'+ta('f-conf','ch.refl.confuso',R.confuso,2)+'</div>'+
+    '<div class="field"><label for="f-apr">O que aprendi?</label>'+ta('f-apr','ch.aprendi',c.aprendi,3)+'</div>'+
+    '<div class="field"><label for="f-quero">O que ainda quero entender?</label>'+ta('f-quero','ch.quero',c.quero,3)+'</div></div>'+
+    '<div class="row"><button class="btn primary big" data-act="concluir">Salvar no histórico</button></div>'+abandon()+'</section>';
+}
+function vDone(){
+  const t=ui.done.topic;
+  return '<section class="stage"><div class="eyebrow">Registrado no histórico</div><h1 class="topic sm'+(ui.anim?' enter':'')+'">'+esc(t.t)+'</h1>'+
+    '<p class="lead muted">O que você escreveu na reflexão está guardado. Dá para rever tudo no histórico.</p>'+
+    '<div class="row"><button class="btn primary big" data-act="sortear"'+(pool().length?'':' disabled')+'>Sortear outro tema</button>'+
+    '<a class="btn" href="#historico">Ver histórico</a><button class="btn" data-act="notaDoTema">Anotar no caderno</button></div>'+catBar()+'</section>';
+}
+
+/* --- histórico --- */
+function histDetail(h){
+  const R=h.refl||{},A=h.apoio||{};
+  const qa=QS.map(q=>'<div class="qa"><dt>'+q[1]+'</dt><dd>'+(ANS[R[q[0]]]||'Sem resposta')+'</dd></div>').join('');
+  const txt=[['Pontos que ficaram confusos',R.confuso],['O que aprendi',h.aprendi],['O que ainda quero entender',h.quero]]
+    .filter(b=>b[1]&&b[1].trim()).map(b=>'<div><h3>'+b[0]+'</h3><p class="pre">'+esc(b[1])+'</p></div>').join('');
+  const ap=APOIO.filter(a=>(A[a[0]]||'').trim()).map(a=>'<div><h3>'+a[1]+'</h3><p class="pre">'+esc(A[a[0]])+'</p></div>').join('');
+  const notes=S.notes.filter(n=>n.topic&&n.topic.id===h.topic.id);
+  return '<div class="detail"><dl>'+qa+'</dl>'+txt+
+    (ap?'<div style="display:grid;gap:12px"><h2 style="font-size:1.05rem;margin:0">Anotações da pesquisa</h2>'+ap+'</div>':'')+
+    (notes.length?'<div style="display:grid;gap:12px"><h2 style="font-size:1.05rem;margin:0">Anotações no caderno</h2>'+notes.map(n=>'<div><h3>'+TIPOS[n.tipo||'anotacao']+'</h3><p class="pre"><strong>'+esc(n.titulo||'Sem título')+'</strong>'+(n.corpo?'\n'+esc(n.corpo):'')+'</p></div>').join('')+'</div>':'')+
+    '<div class="row">'+startBtn('histRepeat',h.id,'Pesquisar de novo')+cbtn('histDel',h.id,'Excluir registro','Confirmar exclusão')+'</div></div>';
+}
+function vHistorico(){
+  const f=ui.histFiltro||'';
+  const cids=[]; S.history.forEach(h=>{if(cids.indexOf(h.topic.cid)<0) cids.push(h.topic.cid);});
+  const list=S.history.filter(h=>!f||h.topic.cid===f);
+  const names=id=>{const c=BANCO.find(x=>x.id===id); return c?c.nome:'Tema próprio';};
+  return '<section class="page"><div class="pagehead"><h1 class="title">Histórico</h1>'+
+    (cids.length>1?'<div class="inline"><label for="histFiltro">Categoria</label><select id="histFiltro" data-change="histFiltro"><option value="">Todas</option>'+
+      cids.map(id=>'<option value="'+esc(id)+'"'+(f===id?' selected':'')+'>'+esc(names(id))+'</option>').join('')+'</select></div>':'')+'</div>'+
+    (!S.history.length?'<p class="empty">Nenhum desafio registrado ainda. Sorteie um tema, pesquise, explique e salve a reflexão para ele aparecer aqui.</p>':
+     !list.length?'<p class="empty">Nenhum registro nessa categoria.</p>':
+     '<ol class="rows">'+list.map(h=>{
+       const open=ui.histOpen===h.id;
+       return '<li><button class="rowhead" data-act="histToggle" data-id="'+esc(h.id)+'" aria-expanded="'+open+'"><span class="r-title">'+esc(h.topic.t)+'</span>'+
+         '<span class="r-meta">'+esc(h.topic.c)+' · '+fmtDate(h.ts)+' · pesquisa '+fmtDur(h.pesquisaSeg)+' · explicação '+fmtDur(h.explicacaoSeg)+'</span></button>'+(open?histDetail(h):'')+'</li>';
+     }).join('')+'</ol>')+'</section>';
+}
+
+/* --- salvos --- */
+function vSalvos(){
+  return '<section class="page"><div class="pagehead"><h1 class="title">Temas salvos</h1></div>'+
+    (!S.saved.length?'<p class="empty">Nenhum tema salvo. Use “Salvar tema” quando um assunto chamar sua atenção.</p>':
+    '<ul class="rows">'+S.saved.map(s=>'<li class="item"><div><span class="r-title">'+esc(s.t)+'</span><span class="r-meta">'+esc(s.c)+'</span></div>'+
+      '<div class="row">'+startBtn('startSaved',s.id,'Fazer o desafio')+'<button class="btn" data-act="delSaved" data-id="'+esc(s.id)+'">Remover</button></div></li>').join('')+'</ul>')+'</section>';
+}
+
+/* --- caderno --- */
+function topicChoices(){
+  const m=new Map();
+  const add=t=>{if(t&&t.id&&!m.has(t.id)) m.set(t.id,{id:t.id,t:t.t,c:t.c,cid:t.cid});};
+  if(ui.noteDraft) add(ui.noteDraft.topic);
+  if(S.ch) add(S.ch.topic);
+  S.saved.forEach(add);
+  S.history.slice(0,40).forEach(h=>add(h.topic));
+  return Array.from(m.values());
+}
+function linkLines(s){
+  return (s||'').split('\n').map(x=>x.trim()).filter(Boolean).map(l=>/^https?:\/\//i.test(l)?'<a href="'+esc(l)+'" target="_blank" rel="noopener noreferrer">'+esc(l)+'</a>':'<span>'+esc(l)+'</span>');
+}
+function vCaderno(){
+  const d=ui.noteDraft;
+  if(d){
+    const ch=topicChoices();
+    return '<section class="page"><div class="pagehead"><h1 class="title">'+(d.id?'Editar anotação':'Nova anotação')+'</h1></div><div class="form">'+
+      '<div class="field"><label for="n-titulo">Título</label><input id="n-titulo" type="text" data-bind="nd.titulo" value="'+esc(d.titulo)+'" autocomplete="off"></div>'+
+      '<div class="field"><span class="lbl">Tipo</span><div class="seg" role="group" aria-label="Tipo">'+
+        Object.keys(TIPOS).map(k=>'<button data-act="noteTipo" data-v="'+k+'" aria-pressed="'+(d.tipo===k)+'">'+TIPOS[k]+'</button>').join('')+'</div></div>'+
+      '<div class="field"><label for="n-corpo">Texto</label>'+ta('n-corpo','nd.corpo',d.corpo,7)+'</div>'+
+      '<div class="field"><label for="n-links">Links consultados (um por linha)</label>'+ta('n-links','nd.links',d.links,3)+'</div>'+
+      '<div class="field"><label for="n-tema">Tema relacionado</label><select id="n-tema" data-change="noteTema"><option value="">Nenhum</option>'+
+        ch.map(t=>'<option value="'+esc(t.id)+'"'+(d.topic&&d.topic.id===t.id?' selected':'')+'>'+esc(t.t)+'</option>').join('')+'</select></div>'+
+      (ui.noteErr?'<p class="warn" role="alert">'+esc(ui.noteErr)+'</p>':'')+
+      '<div class="row"><button class="btn primary" data-act="noteSave">Salvar</button><button class="btn" data-act="noteCancel">Cancelar</button></div></div></section>';
+  }
+  return '<section class="page"><div class="pagehead"><h1 class="title">Caderno</h1><button class="btn primary" data-act="noteNew">Nova anotação</button></div>'+
+    (!S.notes.length?'<p class="empty">O caderno está vazio. Guarde dúvidas, exemplos e links do que você consultar.</p>':
+    '<div class="notes">'+S.notes.map(n=>
+      '<article class="note"><div class="eyebrow">'+TIPOS[n.tipo||'anotacao']+'</div><h2>'+esc(n.titulo||'Sem título')+'</h2>'+
+      (n.corpo?'<p class="pre">'+esc(n.corpo)+'</p>':'')+
+      ((n.links||'').trim()?'<div class="links">'+linkLines(n.links).join('')+'</div>':'')+
+      (n.topic?'<p class="small muted" style="margin:0">Tema: '+esc(n.topic.t)+'</p>':'')+
+      '<p class="small muted" style="margin:0">'+fmtDate(n.atualizada||n.criada)+'</p>'+
+      '<div class="row"><button class="btn sm" data-act="noteEdit" data-id="'+esc(n.id)+'">Editar</button>'+cbtn('noteDel',n.id,'Excluir','Confirmar exclusão','sm')+'</div></article>').join('')+'</div>')+'</section>';
+}
+
+/* --- 24 horas --- */
+const curPlan=()=>S.plans.find(p=>p.id===ui.planId);
+function v24h(){
+  if(ui.planId==='new'){
+    const tema=(ui.newPlan&&ui.newPlan.tema)||'';
+    return '<section class="page"><div class="pagehead"><h1 class="title">Novo plano</h1></div><div class="form">'+
+      '<div class="field"><label for="p-tema">Tema</label><input id="p-tema" list="temas-dl" type="text" data-bind="np.tema" value="'+esc(tema)+'" autocomplete="off" placeholder="Escolha da lista ou escreva o seu">'+
+      '<datalist id="temas-dl">'+TOPICOS.map(t=>'<option value="'+esc(t.t)+'"></option>').join('')+'</datalist></div>'+
+      '<div><button class="btn sm" data-act="planSortear">Sortear do banco</button></div>'+
+      (ui.planErr?'<p class="warn" role="alert">'+esc(ui.planErr)+'</p>':'')+
+      '<div class="row"><button class="btn primary" data-act="planCreate">Criar plano</button><button class="btn" data-act="planBack">Cancelar</button></div></div></section>';
+  }
+  const p=curPlan();
+  if(p){
+    const feitas=p.etapas.filter(e=>e.ok).length;
+    return '<section class="page"><div style="margin-bottom:18px"><button class="linkbtn" data-act="planBack">← Todos os planos</button></div>'+
+      '<div style="display:grid;gap:14px;margin-bottom:26px"><div class="eyebrow">'+esc(p.topic.c)+'</div><h1 class="topic sm">'+esc(p.topic.t)+'</h1>'+
+      '<p class="small muted" style="margin:0">Começou em '+fmtDate(p.criado)+' às '+fmtTime(p.criado)+'. A janela de 24 horas vai até '+fmtDate(p.criado+864e5)+' às '+fmtTime(p.criado+864e5)+', mas o ritmo é seu e não há prazo obrigatório.</p></div>'+
+      '<div class="form">'+
+      '<div class="field"><label for="p-obj">Objetivo de aprendizado</label>'+ta('p-obj','pl.objetivo',p.objetivo,2)+'</div>'+
+      '<div class="field"><label for="p-sabia">O que eu já sei</label>'+ta('p-sabia','pl.sabia',p.sabia,3)+'</div>'+
+      '<div class="field"><span class="lbl">Etapas de exploração'+(p.etapas.length?' ('+feitas+' de '+p.etapas.length+' concluídas)':'')+'</span>'+
+        (p.etapas.length?'<ul class="steps-list">'+p.etapas.map(e=>'<li><label class="chk"><input type="checkbox" data-act="etapaCheck" data-id="'+esc(e.id)+'"'+(e.ok?' checked':'')+'><span class="'+(e.ok?'done':'')+'">'+esc(e.txt)+'</span></label>'+
+          '<button class="x" data-act="etapaDel" data-id="'+esc(e.id)+'" aria-label="Remover etapa">×</button></li>').join('')+'</ul>':'')+
+        '<div class="addrow"><input id="p-novaetapa" type="text" placeholder="Ex.: ler um artigo introdutório" autocomplete="off" aria-label="Nova etapa"><button class="btn" data-act="etapaAdd">Adicionar etapa</button></div></div>'+
+      '<div class="field"><label for="p-desc">Descobertas</label>'+ta('p-desc','pl.descobertas',p.descobertas,4)+'</div>'+
+      '<div class="field"><label for="p-duv">Dúvidas</label>'+ta('p-duv','pl.duvidas',p.duvidas,3)+'</div>'+
+      '<div class="field"><label for="p-refl">Reflexão final</label>'+ta('p-refl','pl.reflexao',p.reflexao,4)+'</div>'+
+      '<div>'+cbtn('planDel',p.id,'Excluir este plano','Confirmar exclusão','sm')+'</div></div></section>';
+  }
+  return '<section class="page"><div class="pagehead"><h1 class="title">Aprender em 24 horas</h1><button class="btn primary" data-act="planNew">Novo plano</button></div>'+
+    '<p class="lead muted" style="margin-bottom:22px">Escolha um assunto e explore com calma ao longo de um dia. A ideia é ir mais fundo, não dominar o tema.</p>'+
+    (!S.plans.length?'<p class="empty">Nenhum plano ainda.</p>':
+    '<ol class="rows">'+S.plans.map(p=>'<li><button class="rowhead" data-act="planOpen" data-id="'+esc(p.id)+'"><span class="r-title">'+esc(p.topic.t)+'</span>'+
+      '<span class="r-meta">'+esc(p.topic.c)+' · começou em '+fmtDate(p.criado)+' · '+p.etapas.filter(e=>e.ok).length+' de '+p.etapas.length+' etapas</span></button></li>').join('')+'</ol>')+'</section>';
+}
+
+/* --- ajustes --- */
+const FORMATO=1;
+let DL=null;
+try{if(window.claude&&window.claude.use) window.claude.use('downloads').then(d=>{DL=d||null;}).catch(()=>{});}catch(e){}
+const catNome=id=>{const c=BANCO.find(x=>x.id===id); return c?c.nome:'';};
+
+function buildExport(){
+  const p=S.prefs;
+  return {app:'curiosa',formato:FORMATO,exportadoEm:new Date().toISOString(),
+    dados:{
+      preferencias:{pesq:p.pesq,expl:p.expl,excl:p.excl,som:p.som!==false,tema:p.tema},
+      historico:S.history,salvos:S.saved,anotacoes:S.notes,
+      temasPersonalizados:S.custom,planos24h:S.plans
+    }};
+}
+async function doExport(){
+  const txt=JSON.stringify(buildExport(),null,2);
+  const nome='curiosa-'+new Date().toISOString().slice(0,10)+'.json';
+  ui.expText=''; ui.expMsg=null;
+  if(DL){
+    try{
+      await DL.save({filename:nome,data:txt});
+      ui.expMsg={ok:true,t:'Exportação concluída: '+nome+'.'};
+      render(); return;
+    }catch(e){
+      if(e&&e.code==='declined'){ui.expMsg={ok:false,t:'Salvamento cancelado. Nada foi exportado.'}; render(); return;}
+    }
+  }
+  ui.expText=txt;
+  ui.expMsg={ok:true,t:'Não foi possível baixar o arquivo neste ambiente. Copie o texto abaixo e guarde em um arquivo .json.'};
+  render();
+}
+
+/* Validação e limpeza do arquivo importado. Nada é gravado aqui. */
+function parseImport(text){
+  let j;
+  try{j=JSON.parse(text);}catch(e){return {ok:false,erro:'O conteúdo não é um JSON válido.'};}
+  if(!j||typeof j!=='object'||Array.isArray(j)||j.app!=='curiosa'||!j.dados||typeof j.dados!=='object')
+    return {ok:false,erro:'Este arquivo não parece ser uma exportação do Curiosa.'};
+  if(typeof j.formato!=='number'||j.formato<1) return {ok:false,erro:'O formato do arquivo está ausente ou inválido.'};
+  if(j.formato>FORMATO) return {ok:false,erro:'O arquivo foi criado por uma versão mais nova do Curiosa (formato '+j.formato+'). Este aplicativo lê até o formato '+FORMATO+'.'};
+  const d=j.dados,skip={n:0};
+  const str=(v,max)=>typeof v==='string'?v.slice(0,max||20000):'';
+  const num=(v,def)=>(typeof v==='number'&&isFinite(v))?v:def;
+  const obj=v=>v&&typeof v==='object'&&!Array.isArray(v);
+  const topic=t=>(obj(t)&&typeof t.id==='string'&&t.id&&typeof t.t==='string'&&t.t.trim()&&typeof t.c==='string'&&typeof t.cid==='string')?{id:t.id.slice(0,80),t:t.t.slice(0,120),c:t.c.slice(0,80),cid:t.cid.slice(0,60)}:null;
+  const lista=(k,fn)=>{
+    if(d[k]==null) return [];
+    if(!Array.isArray(d[k])) throw new Error('A seção “'+k+'” está em formato inválido.');
+    const out=[],ids=new Set();
+    d[k].forEach(x=>{const y=fn(x); if(y&&!ids.has(y.id)){ids.add(y.id); out.push(y);} else skip.n++;});
+    return out;
+  };
+  try{
+    const now=Date.now();
+    const history=lista('historico',h=>{
+      if(!obj(h)||typeof h.id!=='string'||!h.id||typeof h.ts!=='number'||!isFinite(h.ts)) return null;
+      const tp=topic(h.topic); if(!tp) return null;
+      const refl={}; QF.forEach(q=>{const v=obj(h.refl)?h.refl[q[0]]:null; if(ANS[v]) refl[q[0]]=v;});
+      if(obj(h.refl)&&typeof h.refl.confuso==='string') refl.confuso=str(h.refl.confuso);
+      const apoio={}; APOIO.forEach(a=>{if(obj(h.apoio)&&typeof h.apoio[a[0]]==='string') apoio[a[0]]=str(h.apoio[a[0]]);});
+      return {id:h.id.slice(0,80),ts:h.ts,topic:tp,pesquisaSeg:num(h.pesquisaSeg,0),explicacaoSeg:num(h.explicacaoSeg,0),
+        pesquisaPlan:num(h.pesquisaPlan,0),explicacaoPlan:num(h.explicacaoPlan,0),apoio:apoio,refl:refl,aprendi:str(h.aprendi),quero:str(h.quero)};
+    });
+    const saved=lista('salvos',x=>{const tp=topic(x); return tp?Object.assign(tp,{ts:num(x.ts,now)}):null;});
+    const notes=lista('anotacoes',n=>{
+      if(!obj(n)||typeof n.id!=='string'||!n.id) return null;
+      const tp=n.topic==null?null:topic(n.topic);
+      if(n.topic!=null&&!tp) return null;
+      return {id:n.id.slice(0,80),tipo:TIPOS[n.tipo]?n.tipo:'anotacao',titulo:str(n.titulo,300),corpo:str(n.corpo),links:str(n.links,5000),
+        topic:tp,criada:num(n.criada,now),atualizada:num(n.atualizada,num(n.criada,now))};
+    });
+    const custom=lista('temasPersonalizados',c=>{
+      if(!obj(c)||typeof c.id!=='string'||c.id.indexOf('u-')!==0||typeof c.t!=='string'||!c.t.trim()||c.t.length>120||!BANCO.some(x=>x.id===c.cid)) return null;
+      return {id:c.id.slice(0,80),t:c.t.trim(),cid:c.cid,ts:num(c.ts,now)};
+    });
+    const plans=lista('planos24h',p=>{
+      if(!obj(p)||typeof p.id!=='string'||!p.id) return null;
+      const tp=topic(p.topic); if(!tp) return null;
+      const et=Array.isArray(p.etapas)?p.etapas.filter(e=>obj(e)&&typeof e.id==='string'&&typeof e.txt==='string').map(e=>({id:e.id.slice(0,80),txt:e.txt.slice(0,500),ok:!!e.ok})):[];
+      return {id:p.id.slice(0,80),criado:num(p.criado,now),topic:tp,objetivo:str(p.objetivo),sabia:str(p.sabia),etapas:et,
+        descobertas:str(p.descobertas),duvidas:str(p.duvidas),reflexao:str(p.reflexao)};
+    });
+    const prefs={},pp=obj(d.preferencias)?d.preferencias:{};
+    if([5,10,15,20].indexOf(pp.pesq)>=0) prefs.pesq=pp.pesq;
+    if([1,2,3].indexOf(pp.expl)>=0) prefs.expl=pp.expl;
+    if(Array.isArray(pp.excl)) prefs.excl=pp.excl.filter(id=>BANCO.some(c=>c.id===id));
+    if(typeof pp.som==='boolean') prefs.som=pp.som;
+    if(['auto','claro','escuro'].indexOf(pp.tema)>=0) prefs.tema=pp.tema;
+    return {ok:true,data:{prefs:prefs,history:history,saved:saved,notes:notes,custom:custom,plans:plans},skipped:skip.n,
+      exportadoEm:typeof j.exportadoEm==='string'?j.exportadoEm:''};
+  }catch(e){return {ok:false,erro:e.message||'Não foi possível ler o arquivo.'};}
+}
+function impPreview(){
+  const D=ui.imp.data,ids=a=>new Set(a.map(x=>x.id));
+  const novos=(cur,inc)=>{const s2=ids(cur); return inc.filter(x=>!s2.has(x.id)).length;};
+  const names=new Set(TOPICOS.map(t=>normTxt(t.t))),cid=ids(S.custom);
+  const nc=D.custom.filter(c=>!cid.has(c.id)&&!names.has(normTxt(c.t))).length;
+  return {novos:{h:novos(S.history,D.history),s:novos(S.saved,D.saved),n:novos(S.notes,D.notes),c:nc,p:novos(S.plans,D.plans)}};
+}
+function applyImport(mode){
+  const I=ui.imp; if(!I||!I.ok) return;
+  const D=I.data,pv=impPreview().novos;
+  if(mode==='replace'){
+    S.history=D.history.slice(); S.saved=D.saved.slice(); S.notes=D.notes.slice(); S.custom=D.custom.slice(); S.plans=D.plans.slice();
+    Object.assign(S.prefs,D.prefs);
+    S.prefs.excl=arr(S.prefs.excl);
+  }else{
+    const add=(cur,inc)=>{const s2=new Set(cur.map(x=>x.id)); return cur.concat(inc.filter(x=>!s2.has(x.id)));};
+    S.history=add(S.history,D.history); S.saved=add(S.saved,D.saved); S.notes=add(S.notes,D.notes); S.plans=add(S.plans,D.plans);
+    const names=new Set(TOPICOS.map(t=>normTxt(t.t))),ids=new Set(S.custom.map(x=>x.id));
+    D.custom.forEach(c=>{if(ids.has(c.id)||names.has(normTxt(c.t))) return; S.custom.push(c); names.add(normTxt(c.t));});
+  }
+  S.history.sort((a,b)=>b.ts-a.ts); S.saved.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  S.notes.sort((a,b)=>(b.atualizada||0)-(a.atualizada||0)); S.plans.sort((a,b)=>b.criado-a.criado);
+  ['history','saved','notes','plans','custom','prefs'].forEach(k=>save(k));
+  rebuildTopics(); applyTheme();
+  if(!S.prefs.som) Snd.cancelAll();
+  ui.impMsg={ok:true,t:mode==='replace'
+    ?'Importação concluída. Os dados anteriores foram substituídos pelos do arquivo.'
+    :'Importação concluída: '+pv.h+' desafios, '+pv.s+' temas salvos, '+pv.n+' anotações, '+pv.c+' temas personalizados e '+pv.p+' planos novos. O que você já tinha foi mantido.'};
+  ui.imp=null; ui.impText='';
+}
+function readImportText(txt,nome){
+  ui.impMsg=null;
+  ui.imp=Object.assign({nome:nome||'texto colado'},parseImport(txt));
+}
+
+/* temas personalizados */
+function ctSave(){
+  const d=ui.ctDraft; if(!d) return;
+  const nome=(d.t||'').trim().replace(/\s+/g,' ');
+  ui.ctErr='';
+  if(!nome){ui.ctErr='Escreva o nome do tema.'; ui.focusId='ct-nome'; return;}
+  if(nome.length>80){ui.ctErr='Use até 80 caracteres no nome.'; ui.focusId='ct-nome'; return;}
+  if(!BANCO.some(c=>c.id===d.cid)){ui.ctErr='Escolha uma categoria.'; return;}
+  const dup=TOPICOS.find(t=>normTxt(t.t)===normTxt(nome)&&t.id!==d.id);
+  if(dup){ui.ctErr='Já existe um tema chamado “'+dup.t+'” em '+dup.c+'.'; ui.focusId='ct-nome'; return;}
+  if(d.id){
+    const it=S.custom.find(x=>x.id===d.id);
+    if(it){it.t=nome; it.cid=d.cid;}
+    S.saved.forEach(x=>{if(x.id===d.id){x.t=nome; x.cid=d.cid; x.c=catNome(d.cid);}});
+    save('saved');
+  }else S.custom.push({id:'u-'+uid(),t:nome,cid:d.cid,ts:Date.now()});
+  save('custom'); rebuildTopics(); ui.ctDraft=null; ui.ctErr='';
+}
+
+function vAjustes(){
+  const opt=(arr,cur)=>arr.map(m=>'<option value="'+m+'"'+(m===cur?' selected':'')+'>'+m+' min</option>').join('');
+  const TEMAS=[['auto','Automático'],['claro','Claro'],['escuro','Escuro']];
+  const d=ui.ctDraft;
+  const meus='<div class="block"><h2>Meus temas</h2><p class="muted small" style="margin-top:0;max-width:56ch">Temas criados por você entram no sorteio junto com os do aplicativo e respeitam o filtro de categorias.</p>'+
+    (S.custom.length?'<ul class="rows" style="margin-bottom:16px">'+S.custom.map(c=>'<li class="item"><div><span class="r-title" style="font-size:1.1rem">'+esc(c.t)+'</span><span class="r-meta">'+esc(catNome(c.cid))+'</span></div>'+
+      '<div class="row"><button class="btn sm" data-act="ctEdit" data-id="'+esc(c.id)+'">Editar</button>'+cbtn('ctDel',c.id,'Excluir','Confirmar exclusão','sm')+'</div></li>').join('')+'</ul>':'<p class="muted" style="margin:0 0 14px">Você ainda não criou nenhum tema.</p>')+
+    (d?'<div class="form" style="margin-top:4px"><div class="field"><label for="ct-nome">Nome do tema</label><input id="ct-nome" type="text" maxlength="80" data-bind="ct.t" value="'+esc(d.t)+'" autocomplete="off"></div>'+
+      '<div class="field"><label for="ct-cat">Categoria</label><select id="ct-cat" data-change="ctCat">'+BANCO.map(c=>'<option value="'+c.id+'"'+(d.cid===c.id?' selected':'')+'>'+esc(c.nome)+'</option>').join('')+'</select></div>'+
+      (ui.ctErr?'<p class="warn" role="alert" style="margin:0">'+esc(ui.ctErr)+'</p>':'')+
+      '<div class="row"><button class="btn primary" data-act="ctSave">'+(d.id?'Salvar alterações':'Criar tema')+'</button><button class="btn" data-act="ctCancel">Cancelar</button></div></div>'
+      :'<button class="btn" data-act="ctNew">Novo tema</button>')+'</div>';
+  let imp='';
+  if(ui.imp){
+    const I=ui.imp;
+    if(!I.ok) imp='<div class="catpanel" role="alert"><p style="margin:0" class="warn">'+esc(I.erro)+'</p><div class="row" style="margin-top:12px"><button class="btn sm" data-act="impCancel">Fechar</button></div></div>';
+    else{
+      const D=I.data,pv=impPreview().novos,dt=I.exportadoEm?new Date(I.exportadoEm):null;
+      imp='<div class="catpanel"><h3 style="margin:0 0 6px">Arquivo verificado</h3>'+
+        '<p style="margin:0 0 10px" class="small">'+esc(I.nome)+(dt&&!isNaN(dt)?' · exportado em '+fmtDate(dt.getTime()):'')+'</p>'+
+        '<p style="margin:0 0 6px" class="small"><strong>No arquivo:</strong> '+D.history.length+' desafios, '+D.saved.length+' temas salvos, '+D.notes.length+' anotações, '+D.custom.length+' temas personalizados, '+D.plans.length+' planos de 24 horas.'+(I.skipped?' '+I.skipped+' item(ns) inválido(s) ou repetido(s) serão ignorados.':'')+'</p>'+
+        '<p style="margin:0 0 6px" class="small"><strong>Hoje no aplicativo:</strong> '+S.history.length+' desafios, '+S.saved.length+' temas salvos, '+S.notes.length+' anotações, '+S.custom.length+' temas personalizados, '+S.plans.length+' planos.</p>'+
+        '<p style="margin:12px 0 4px" class="small"><strong>Mesclar</strong> adiciona só o que ainda não existe ('+pv.h+' desafios, '+pv.s+' temas salvos, '+pv.n+' anotações, '+pv.c+' temas personalizados, '+pv.p+' planos). Nada do que você tem é apagado ou alterado, e suas preferências continuam como estão.</p>'+
+        '<p style="margin:0 0 14px" class="small"><strong>Substituir</strong> apaga os dados atuais listados acima e passa a usar os do arquivo, incluindo as preferências dele. Não dá para desfazer; exporte antes se quiser uma cópia.</p>'+
+        '<div class="row"><button class="btn primary" data-act="impMerge">Mesclar com meus dados</button>'+cbtn('impReplace','','Substituir tudo','Confirmar: substituir meus dados')+'<button class="btn" data-act="impCancel">Cancelar</button></div></div>';
+    }
+  }
+  return '<section class="page"><div class="pagehead"><h1 class="title">Ajustes</h1></div><div class="form">'+
+    '<div class="field"><label for="s-pesq">Tempo padrão de pesquisa</label><select id="s-pesq" data-change="setPesq">'+opt([5,10,15,20],S.prefs.pesq)+'</select></div>'+
+    '<div class="field"><label for="s-expl">Tempo padrão de explicação</label><select id="s-expl" data-change="setExpl">'+opt([1,2,3],S.prefs.expl)+'</select></div></div>'+
+    '<div class="block"><h2>Aparência</h2><div class="seg" role="group" aria-label="Aparência">'+TEMAS.map(t=>'<button data-act="tema" data-v="'+t[0]+'" aria-pressed="'+(S.prefs.tema===t[0])+'">'+t[1]+'</button>').join('')+'</div>'+
+    '<p class="muted small" style="margin:10px 0 0">Automático segue a configuração do seu dispositivo.</p></div>'+
+    '<div class="block"><h2>Categorias no sorteio</h2><p class="muted small" style="margin-top:0">Marque as categorias que podem aparecer. “só” sorteia apenas aquela categoria.</p>'+catPanel()+'</div>'+
+    meus+
+    '<div class="block"><h2>Temas salvos</h2>'+(!S.saved.length?'<p class="muted" style="margin:0">Nenhum tema salvo.</p>':
+      '<ul class="rows">'+S.saved.map(s=>'<li class="item"><div><span class="r-title" style="font-size:1.1rem">'+esc(s.t)+'</span><span class="r-meta">'+esc(s.c)+'</span></div>'+
+      '<button class="btn sm" data-act="delSaved" data-id="'+esc(s.id)+'">Remover</button></li>').join('')+'</ul>')+'</div>'+
+    '<div class="block"><h2>Dados</h2><p class="muted" style="margin-top:0;max-width:56ch">Tudo fica guardado só neste navegador. Não há conta nem sincronização. Exporte um arquivo para guardar uma cópia ou levar seus dados para outro navegador.</p>'+
+    '<div class="row"><button class="btn" data-act="exportar">Exportar dados (.json)</button>'+
+    '<button class="btn" data-act="impPick">Importar arquivo</button><input id="imp-file" class="sr-only" type="file" accept=".json,application/json" data-change="impFile" tabindex="-1" aria-hidden="true">'+
+    cbtn('limparHist','','Limpar histórico','Confirmar: apagar o histórico')+'</div>'+
+    (ui.expMsg?'<p class="small'+(ui.expMsg.ok?'':' warn')+'" role="status" style="margin:14px 0 0">'+esc(ui.expMsg.t)+'</p>':'')+
+    (ui.expText?'<div class="field" style="margin-top:10px;max-width:720px"><label for="exp-text">Conteúdo exportado</label><textarea id="exp-text" readonly rows="8" style="font-family:var(--f-num);font-size:.8rem">\n'+esc(ui.expText)+'</textarea><div><button class="btn sm" data-act="copiarExp">Copiar texto</button></div></div>':'')+
+    (ui.impMsg?'<p class="small'+(ui.impMsg.ok?'':' warn')+'" role="status" style="margin:14px 0 0">'+esc(ui.impMsg.t)+'</p>':'')+
+    '<div style="margin-top:16px;max-width:720px">'+imp+
+    (!ui.imp?'<div class="field" style="margin-top:6px"><label for="imp-text">Ou cole aqui o conteúdo de um arquivo exportado</label><textarea id="imp-text" data-bind="ix.impText" rows="3">\n'+esc(ui.impText||'')+'</textarea><div><button class="btn sm" data-act="impTexto">Verificar texto</button></div></div>':'')+'</div></div></section>';
+}
+
+const V={inicio:vInicio,historico:vHistorico,salvos:vSalvos,caderno:vCaderno,'24h':v24h,ajustes:vAjustes};
+
+/* ============================================================
+   Renderização
+   ============================================================ */
+let flickTok=0;
+function runFlicker(){
+  const el=$('#topicText'); if(!el) return;
+  const tok=++flickTok;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){Snd.reveal(); return;}
+  const fin=el.textContent,lab=$('.eyebrow');
+  if(lab) lab.style.visibility='hidden';
+  /* cada quadro da animação toca um clique da roleta; o ritmo desacelera até revelar o tema */
+  const delays=[55,55,60,65,75,90,110,135,170,215];
+  let n=0;
+  const step=()=>{
+    if(tok!==flickTok) return;
+    if(!document.body.contains(el)){Snd.cutFx(); return;}
+    if(n>=delays.length){el.textContent=fin; if(lab) lab.style.visibility=''; Snd.reveal(); return;}
+    el.textContent=TOPICOS[Math.floor(Math.random()*TOPICOS.length)].t;
+    Snd.tick(n);
+    setTimeout(step,delays[n++]);
+  };
+  step();
+}
+function render(){
+  const view=currentView(),y=window.scrollY;
+  app.innerHTML=header(view)+'<main id="main">'+V[view]()+'</main>';
+  if(ui.top){window.scrollTo(0,0); ui.top=false;} else window.scrollTo(0,y);
+  if(ui.focusId){const f=document.getElementById(ui.focusId); if(f) f.focus({preventScroll:true}); ui.focusId=null;}
+  else if(ui.fk){
+    const all=document.querySelectorAll('[data-act]');
+    for(let i=0;i<all.length;i++){if(fkOf(all[i])===ui.fk){all[i].focus({preventScroll:true}); break;}}
+  }
+  ui.fk=null;
+  if(ui.shuffle){ui.shuffle=false; runFlicker();}
+  ui.anim=false;
+  syncWake(); syncCountdown(); tick();
+}
+
+/* ============================================================
+   Ações
+   ============================================================ */
+function handleAct(el){
+  const a=el.dataset.act,id=el.dataset.id,v=el.dataset.v,k=el.dataset.k;
+  if(el.dataset.confirm){
+    const key=a+':'+(id||'');
+    if(ui.confirm!==key){ui.confirm=key; ui.fk=fkOf(el); render(); return;}
+    ui.confirm=null;
+  }else ui.confirm=null;
+  ui.fk=fkOf(el);
+  const c=S.ch;
+  switch(a){
+    case 'sortear': doSortear(); break;
+    case 'salvar': if(c) toggleSaved(c.topic); break;
+    case 'iniciarPesq': if(c){c.stage='pesquisa'; c.pesq.dur=S.prefs.pesq*60; save('ch'); ui.top=true; ui.anim=true;} break;
+    case 'dur': {const t=curTimer(); if(t&&t.status==='idle'&&t.acc===0){t.dur=Number(v)*60; save('ch');} break;}
+    case 'tstart': {const t=curTimer(); if(t&&(t.status==='idle'||t.status==='paused')){
+      const inicio=t.status==='idle';
+      Snd.unlock(); t.status='running'; t.t0=Date.now(); save('ch');
+      if(inicio) Snd.start();   /* só no início: continuar não toca nada */
+    } break;}
+    case 'tpause': {const t=curTimer(); if(t&&t.status==='running'){Snd.cancelAll(); t.acc=elapsed(t); t.status='paused'; t.t0=0; save('ch');} break;}
+    case 'trestart': {const t=curTimer(); if(t){Snd.cancelAll(); t.status='idle'; t.acc=0; t.t0=0; t.spent=0; save('ch');} break;}
+    case 'tfinish': finishTimer(); break;
+    case 'som': {
+      S.prefs.som=!S.prefs.som; save('prefs');
+      if(S.prefs.som){Snd.unlock(); Snd.confirm(); cdSig='';} else Snd.cancelAll();
+      break;
+    }
+    case 'tema': if(['auto','claro','escuro'].indexOf(v)>=0){S.prefs.tema=v; save('prefs'); applyTheme();} break;
+    case 'apoioToggle': {const has=c&&Object.keys(c.apoio||{}).some(x=>(c.apoio[x]||'').trim()); const cur=ui.apoioOpen==null?has:ui.apoioOpen; ui.apoioOpen=!cur; break;}
+    case 'abandonar': Snd.cancelAll(); S.ch=null; ui.done=null; ui.apoioOpen=null; save('ch'); ui.top=true; break;
+    case 'refl': if(c){c.refl=c.refl||{}; c.refl[k]=(c.refl[k]===v)?undefined:v; save('ch');} break;
+    case 'concluir': if(c){
+      const e={id:uid(),ts:Date.now(),topic:c.topic,pesquisaSeg:c.pesq.spent||0,explicacaoSeg:c.expl.spent||0,
+        pesquisaPlan:c.pesq.dur,explicacaoPlan:c.expl.dur,apoio:c.apoio||{},refl:c.refl||{},aprendi:c.aprendi||'',quero:c.quero||''};
+      S.history.unshift(e); save('history');
+      ui.done={topic:c.topic,entryId:e.id}; S.ch=null; save('ch'); ui.apoioOpen=null; ui.top=true; ui.anim=true;
+    } break;
+    case 'notaDoTema': {
+      const t=ui.done&&ui.done.topic; ui.done=null;
+      ui.noteDraft={id:null,tipo:'anotacao',titulo:'',corpo:'',links:'',topic:t||null}; ui.noteErr=''; ui.top=true;
+      location.hash='#caderno'; break;
+    }
+    case 'catToggle': ui.catOpen=!ui.catOpen; break;
+    case 'catAll': S.prefs.excl=[]; save('prefs'); break;
+    case 'catNone': S.prefs.excl=BANCO.map(x=>x.id); save('prefs'); break;
+    case 'catOnly': S.prefs.excl=BANCO.map(x=>x.id).filter(x=>x!==id); save('prefs'); break;
+    case 'histToggle': ui.histOpen=ui.histOpen===id?null:id; break;
+    case 'histDel': S.history=S.history.filter(h=>h.id!==id); save('history'); ui.histOpen=null; break;
+    case 'histRepeat': {const h=S.history.find(x=>x.id===id); if(h) startWith(h.topic); break;}
+    case 'startSaved': {const s=S.saved.find(x=>x.id===id); if(s) startWith(s); break;}
+    case 'delSaved': S.saved=S.saved.filter(s=>s.id!==id); save('saved'); break;
+    case 'exportar': doExport(); return;
+    case 'impPick': {const f=document.getElementById('imp-file'); if(f) f.click(); return;}
+    case 'copiarExp': {
+      const t=ui.expText;
+      try{navigator.clipboard.writeText(t).then(()=>{ui.expMsg={ok:true,t:'Texto copiado.'}; render();}).catch(()=>{const x=document.getElementById('exp-text'); if(x){x.focus(); x.select();}});}
+      catch(e){const x=document.getElementById('exp-text'); if(x){x.focus(); x.select();}}
+      return;
+    }
+    case 'impTexto': {const t=(ui.impText||'').trim(); if(!t){ui.impMsg={ok:false,t:'Cole o conteúdo do arquivo antes de verificar.'}; break;} readImportText(t,''); break;}
+    case 'impCancel': ui.imp=null; ui.impMsg=null; break;
+    case 'impMerge': applyImport('merge'); break;
+    case 'impReplace': applyImport('replace'); break;
+    case 'ctNew': ui.ctDraft={id:null,t:'',cid:BANCO[0].id}; ui.ctErr=''; ui.focusId='ct-nome'; break;
+    case 'ctEdit': {const c=S.custom.find(x=>x.id===id); if(c){ui.ctDraft={id:c.id,t:c.t,cid:c.cid}; ui.ctErr=''; ui.focusId='ct-nome';} break;}
+    case 'ctCancel': ui.ctDraft=null; ui.ctErr=''; break;
+    case 'ctSave': ctSave(); break;
+    case 'ctDel': S.custom=S.custom.filter(x=>x.id!==id); S.saved=S.saved.filter(x=>x.id!==id); save('custom'); save('saved'); rebuildTopics(); if(ui.ctDraft&&ui.ctDraft.id===id) ui.ctDraft=null; break;
+    case 'limparHist': S.history=[]; save('history'); ui.histOpen=null; ui.histFiltro=''; break;
+    case 'noteNew': ui.noteDraft={id:null,tipo:'anotacao',titulo:'',corpo:'',links:'',topic:null}; ui.noteErr=''; ui.top=true; break;
+    case 'noteEdit': {const n=S.notes.find(x=>x.id===id); if(n){ui.noteDraft=JSON.parse(JSON.stringify(n)); ui.noteErr=''; ui.top=true;} break;}
+    case 'noteTipo': if(ui.noteDraft) ui.noteDraft.tipo=v; break;
+    case 'noteCancel': ui.noteDraft=null; ui.noteErr=''; ui.top=true; break;
+    case 'noteSave': {
+      const d=ui.noteDraft; if(!d) break;
+      if(!(d.titulo||'').trim()&&!(d.corpo||'').trim()&&!(d.links||'').trim()){ui.noteErr='Escreva um título, um texto ou um link antes de salvar.'; break;}
+      const now=Date.now();
+      if(d.id){const i=S.notes.findIndex(x=>x.id===d.id); if(i>=0) S.notes[i]=Object.assign({},d,{atualizada:now});}
+      else S.notes.unshift(Object.assign({},d,{id:uid(),criada:now,atualizada:now}));
+      save('notes'); ui.noteDraft=null; ui.noteErr=''; ui.top=true; break;
+    }
+    case 'noteDel': S.notes=S.notes.filter(n=>n.id!==id); save('notes'); break;
+    case 'planNew': ui.planId='new'; ui.newPlan={tema:''}; ui.planErr=''; ui.top=true; break;
+    case 'planSortear': {const t=TOPICOS[Math.floor(Math.random()*TOPICOS.length)]; ui.newPlan={tema:t.t}; break;}
+    case 'planCreate': {
+      const txt=((ui.newPlan&&ui.newPlan.tema)||'').trim();
+      if(!txt){ui.planErr='Escolha um tema da lista ou escreva o seu.'; break;}
+      const m=TOPICOS.find(t=>t.t.toLowerCase()===txt.toLowerCase());
+      const topic=m?{id:m.id,t:m.t,c:m.c,cid:m.cid}:{id:'p-'+uid(),t:txt,c:'Tema próprio',cid:'proprio'};
+      const p={id:uid(),criado:Date.now(),topic:topic,objetivo:'',sabia:'',etapas:[],descobertas:'',duvidas:'',reflexao:''};
+      S.plans.unshift(p); save('plans'); ui.planId=p.id; ui.newPlan=null; ui.planErr=''; ui.top=true; break;
+    }
+    case 'planOpen': ui.planId=id; ui.top=true; break;
+    case 'planBack': ui.planId=null; ui.newPlan=null; ui.planErr=''; ui.top=true; break;
+    case 'planDel': S.plans=S.plans.filter(p=>p.id!==id); save('plans'); ui.planId=null; ui.top=true; break;
+    case 'etapaAdd': addEtapa(); break;
+    case 'etapaDel': {const p=curPlan(); if(p){p.etapas=p.etapas.filter(e=>e.id!==id); save('plans');} break;}
+  }
+  render();
+}
+function addEtapa(){
+  const p=curPlan(),inp=document.getElementById('p-novaetapa');
+  if(!p||!inp) return;
+  const txt=inp.value.trim();
+  if(!txt){ui.focusId='p-novaetapa'; return;}
+  p.etapas.push({id:uid(),txt:txt,ok:false}); save('plans'); ui.focusId='p-novaetapa'; ui.fk=null;
+}
+
+/* ============================================================
+   Eventos
+   ============================================================ */
+function bindObj(root){return root==='ch'?S.ch:root==='nd'?ui.noteDraft:root==='pl'?curPlan():root==='np'?ui.newPlan:root==='ct'?ui.ctDraft:root==='ix'?ui:null;}
+function bind(el,path){
+  const parts=path.split('.'),root=parts.shift();
+  let o=bindObj(root); if(!o) return;
+  while(parts.length>1){const k=parts.shift(); o[k]=o[k]||{}; o=o[k];}
+  o[parts[0]]=el.value;
+  if(root==='ch') save('ch'); else if(root==='pl') save('plans');
+}
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');
+  if(!el||el.tagName==='INPUT'||el.disabled) return;
+  handleAct(el);
+});
+document.addEventListener('input',e=>{
+  const b=e.target.dataset&&e.target.dataset.bind;
+  if(b) bind(e.target,b);
+});
+document.addEventListener('change',e=>{
+  const el=e.target,a=el.dataset.act,c=el.dataset.change;
+  if(a==='catCheck'){
+    const id=el.dataset.id,i=S.prefs.excl.indexOf(id);
+    if(el.checked){if(i>=0) S.prefs.excl.splice(i,1);} else if(i<0) S.prefs.excl.push(id);
+    save('prefs'); ui.fk='catCheck|'+id+'|'; render();
+  }else if(a==='etapaCheck'){
+    const p=curPlan(),it=p&&p.etapas.find(x=>x.id===el.dataset.id);
+    if(it){it.ok=el.checked; save('plans');}
+    ui.fk='etapaCheck|'+el.dataset.id+'|'; render();
+  }else if(c==='histFiltro'){ui.histFiltro=el.value; ui.focusId=el.id; render();}
+  else if(c==='setPesq'){S.prefs.pesq=Number(el.value); save('prefs'); ui.focusId=el.id; render();}
+  else if(c==='setExpl'){S.prefs.expl=Number(el.value); save('prefs'); ui.focusId=el.id; render();}
+  else if(c==='ctCat'){if(ui.ctDraft) ui.ctDraft.cid=el.value;}
+  else if(c==='impFile'){
+    const f=el.files&&el.files[0]; if(!f) return;
+    if(f.size>20*1024*1024){ui.impMsg={ok:false,t:'O arquivo é grande demais para ser uma exportação do Curiosa.'}; render(); return;}
+    const r=new FileReader();
+    r.onload=()=>{readImportText(String(r.result||''),f.name); render();};
+    r.onerror=()=>{ui.impMsg={ok:false,t:'Não foi possível ler o arquivo.'}; render();};
+    r.readAsText(f);
+  }
+  else if(c==='noteTema'){
+    if(ui.noteDraft) ui.noteDraft.topic=el.value?(topicChoices().find(t=>t.id===el.value)||null):null;
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target&&e.target.id==='p-novaetapa'){e.preventDefault(); addEtapa(); render();}
+  if(e.key==='Enter'&&e.target&&e.target.id==='ct-nome'){e.preventDefault(); ctSave(); render();}
+});
+window.addEventListener('hashchange',()=>{ui.confirm=null; ui.top=true; render();});
+document.addEventListener('visibilitychange',()=>{tick(); syncWake();});
+setInterval(tick,250);
+
+render();
+})();
+</script>
+
+</body></html>
